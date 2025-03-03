@@ -1,35 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {Component, PropsWithChildren} from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+type State = {
+  person: {
+    fullName: string;
+    bio: string;
+    imgSrc: string;
+    profession: string;
+  },
+  shows: boolean,
+  timeSinceMount: number
 }
 
-export default App
+class App extends Component {
+  private interval: number;
+
+  constructor(props: PropsWithChildren) {
+    super(props);
+    this.state = {
+      person: {
+        fullName: "John Doe",
+        bio: "A passionate developer who loves React.",
+        imgSrc: "https://images.pexels.com/photos/5702311/pexels-photo-5702311.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        profession: "Software Engineer",
+      },
+      shows: true,
+      timeSinceMount: 0,
+    };
+    this.interval = 0;
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.setState((prevState: State) => ({ timeSinceMount: prevState.timeSinceMount + 1 }));
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  toggleShow = () => {
+    this.setState((prevState: State) => ({ shows: !prevState.shows }));
+  };
+
+  render() {
+    const { person, shows, timeSinceMount } = this.state as State;
+    return (
+      <div className="App" style={{ textAlign: "center", marginTop: "20px" }}>
+        <p className="info">Time since component mounted: {timeSinceMount} seconds</p>
+
+        {shows && (
+          <div className="profile" >
+            <img src={person.imgSrc} alt="Profile" style={{ borderRadius: "50%" }} />
+            <h2>{person.fullName}</h2>
+            <p>{person.bio}</p>
+            <h3>{person.profession}</h3>
+          </div>
+        )}
+
+        <div className="button-wrapper" >
+          <button onClick={this.toggleShow} style={{ marginBottom: "20px" }}>
+            {shows ? "Hide Profile" : "Show Profile"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;

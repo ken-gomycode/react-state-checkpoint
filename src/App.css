@@ -4,3 +4,43 @@
   padding: 2rem;
   text-align: center;
 }
+
+.App {
+  position: relative;
+}
+
+img {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile {
+  border: 1px solid lightgray;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 100px auto;
+  max-width: 500px;
+}
+
+.info {
+  opacity: 0.5;
+}
+
+button {
+  background: green;
+  color: white;
+  height: 48px;
+  border: none;
+  width: 180px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-wrapper {
+  position: fixed;
+  bottom: 3rem;
+  left: 0;
+  right: 0;
+}
